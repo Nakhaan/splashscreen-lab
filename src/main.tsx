@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { check } from "@tauri-apps/plugin-updater";
-import { ask } from "@tauri-apps/plugin-dialog";
+import { relaunch } from "@tauri-apps/plugin-process";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
@@ -18,28 +18,33 @@ window.addEventListener("DOMContentLoaded", () => {
 async function checkForAppUpdates(manualCheck = false) {
   try {
     const update = await check();
-
     if (update) {
-      const yes = await ask(
-        `Update to ${update.version} is available!\n\nRelease notes: ${update.body}`,
-        {
-          title: "Update Available",
-          kind: "info",
-          okLabel: "Update",
-          cancelLabel: "Cancel",
-        },
+      console.log(
+        `found update ${update.version} from ${update.date} with notes ${update.body}`,
       );
-
-      if (yes) {
-        // Download, install, and relaunch automatically
-        await update.downloadAndInstall();
-        // No need for relaunch() - it's handled automatically
-      }
-    } else if (manualCheck) {
-      await ask("You are on the latest version", {
-        title: "No Updates",
-        kind: "info",
+      let downloaded = 0;
+      let contentLength = 0;
+      // alternatively we could also call update.download() and update.install() separately
+      await update.downloadAndInstall((event) => {
+        switch (event.event) {
+          case "Started":
+            contentLength = event.data.contentLength ?? 0;
+            console.log(
+              `started downloading ${event.data.contentLength ?? 0} bytes`,
+            );
+            break;
+          case "Progress":
+            downloaded += event.data.chunkLength;
+            console.log(`downloaded ${downloaded} from ${contentLength}`);
+            break;
+          case "Finished":
+            console.log("download finished");
+            break;
+        }
       });
+
+      console.log("update installed");
+      await relaunch();
     }
   } catch (error) {
     console.error("Update check failed:", error);
