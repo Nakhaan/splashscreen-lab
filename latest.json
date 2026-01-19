@@ -5,7 +5,7 @@
   "platforms": {
     "linux-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUSXA5ZE1nRS93ZUJCTmQ0dGpYQ0FLdnBGZm5sL1dZTCtSaW1rSElVQ2xDMElKemx6SVlsMWRMb0YrR0hKOWFRYWRwS2VuaEZTaGtrMitKOVFlcDNHZWFGVW4waXltZXdvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY4ODQ1Nzk1CWZpbGU6c3BsYXNoc2NyZWVuLWxhYl8wLjAuMV9hbWQ2NC5BcHBJbWFnZQpwc3RQY0ZEbnA5RTdtYTZ3U0RyR2F2OERvM01OZXYzQ3FYRHo2QlNwdCs1OVo2bkUzOXREQ1hhUk5CK3Ivalh0elUxRGkyUDdnL0xvZXJPdzkrM2NCdz09Cg==",
-      "url": "https://github.com/Nakhaan/splashscreen-lab/releases/download/v0.0.1/splashscreen-lab_0.0.1_amd64.AppImage"
+      "url": "https://github.com/Nakhaan/splashscreen-lab/releases/download/0.0.1/splashscreen-lab_0.0.1_amd64.AppImage"
     }
   }
 }
