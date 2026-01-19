@@ -1,11 +1,11 @@
 {
-  "version": "0.0.2",
+  "version": "0.0.3",
   "notes": "Test update with bug fixes",
   "pub_date": "2026-01-19T19:30:00Z",
   "platforms": {
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUSXA5ZE1nRS93ZUlnc2U2K21DWHJrcXZDZEIvT1RpdHNHMW1xK1lTYnJVZSt6TjVBOW1NeUVCcy82OFpuSFp6Mmh0WEhSL3E2WUtUeDh6T0JHWWZ6K3RQdUpka1JVbndNPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY4ODQ3NzE0CWZpbGU6c3BsYXNoc2NyZWVuLWxhYl8wLjAuMl9hbWQ2NC5BcHBJbWFnZQo5dnRqQ0lVUHQ2Vld0a0VkWXh1QWU2OE9kWUUzSG1ZOHJKZVFwZTJMa3hiTXVrQWhwRjBaQXZWOFF5bXFqSjZQdWo5cHJkRm1QOHRqRFBPNlpvUUlDUT09Cg==",
-      "url": "https://github.com/Nakhaan/splashscreen-lab/releases/download/0.0.2/splashscreen-lab_0.0.2_amd64.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUSXA5ZE1nRS93ZUcvdFQ2Z0FCVzJCSENob0lLWjNkY2d4bFRYUTFCdWc0L3NrTXdDTjRnOGFSQVlCSE5xamJaTjlLSE1lVXlWYkQ4VEw2eDd5alZUQXBwUVF2Mm92RUF3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY4ODQ5NjQwCWZpbGU6c3BsYXNoc2NyZWVuLWxhYl8wLjAuM19hbWQ2NC5BcHBJbWFnZQpvdnV3Q3dvOGYzRFRrbEtsenpNdDNnSXBrUFJidGJaVlJvOWF0WHY2STZUWlJPWXJSUjBiNUo5TTBPbzRwZFlhaVJqd0xsanNoUXExeVkyTVZPdWVEUT09Cg==",
+      "url": "https://github.com/Nakhaan/splashscreen-lab/releases/download/0.0.3/splashscreen-lab_0.0.3_amd64.AppImage"
     }
   }
 }
