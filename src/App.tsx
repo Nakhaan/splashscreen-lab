@@ -14,7 +14,7 @@ function App() {
 
   return (
     <main className="container">
-      <h1>Welcome to Tauri + React VERSION 0.0.4</h1>
+      <h1>Welcome to Tauri + React VERSION 0.0.5</h1>
 
       <div className="row">
         <a href="https://vite.dev" target="_blank">

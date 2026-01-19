@@ -16,6 +16,7 @@ window.addEventListener("DOMContentLoaded", () => {
 });
 
 async function checkForAppUpdates() {
+  console.log("checking for updates...");
   try {
     const update = await check();
     if (update) {
