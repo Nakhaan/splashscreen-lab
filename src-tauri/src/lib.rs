@@ -17,6 +17,7 @@ pub fn run() {
     // Don't write code before Tauri starts, write it in the
     // setup hook instead!
     tauri::Builder::default()
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
         // Register a `State` to be managed by Tauri
