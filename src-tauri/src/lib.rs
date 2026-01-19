@@ -17,6 +17,8 @@ pub fn run() {
     // Don't write code before Tauri starts, write it in the
     // setup hook instead!
     tauri::Builder::default()
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_dialog::init())
         // Register a `State` to be managed by Tauri
         // We need write access to it so we wrap it in a `Mutex`
         .manage(Mutex::new(SetupState {
@@ -30,9 +32,6 @@ pub fn run() {
         .setup(|app| {
             // Spawn setup as a non-blocking task so the windows can be
             // created and ran while it executes
-            #[cfg(desktop)]
-            app.handle()
-                .plugin(tauri_plugin_updater::Builder::new().build());
             spawn(setup(app.handle().clone()));
             // The hook expects an Ok result
             Ok(())

@@ -12,7 +12,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 
 // Effectively a JavaScript main function
 window.addEventListener("DOMContentLoaded", () => {
-  checkForAppUpdates();
+  checkForAppUpdates(true);
 });
 
 async function checkForAppUpdates(manualCheck = false) {

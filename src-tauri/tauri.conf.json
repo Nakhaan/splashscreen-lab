@@ -13,16 +13,7 @@
     "windows": [
       {
         "label": "main",
-        "visible": false
-      },
-      {
-        "label": "splashscreen",
-        "url": "/splashscreen",
-        "decorations": false,
-        "resizable": false,
-        "center": true,
-        "width": 500,
-        "height": 300
+        "visible": true
       }
     ],
     "security": {
