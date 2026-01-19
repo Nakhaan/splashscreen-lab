@@ -76,21 +76,26 @@
       </div>
     </div>
 
-    <script type="module">
-      import { invoke } from "@tauri-apps/api/core";
-
+    <script>
       const statusEl = document.getElementById("status");
       const progressEl = document.getElementById("progress");
       const progressTextEl = document.getElementById("progressText");
 
       function updateProgress(percent, text) {
-        progressEl.style.width = `${percent}%`;
-        progressTextEl.textContent = `${Math.round(percent)}%`;
+        progressEl.style.width = percent + "%";
+        progressTextEl.textContent = Math.round(percent) + "%";
         if (text) statusEl.textContent = text;
       }
 
       async function init() {
         console.log("Splashscreen initializing...");
+
+        // Wait for Tauri to be ready
+        if (!window.__TAURI__) {
+          console.error("Tauri API not available");
+          statusEl.textContent = "Error loading...";
+          return;
+        }
 
         try {
           updateProgress(20, "Loading...");
@@ -101,48 +106,51 @@
             window.location.hostname === "127.0.0.1";
 
           if (!isDev) {
-            // Only check for updates in production
             console.log("Production mode - checking for updates");
-            const { check } = await import("@tauri-apps/plugin-updater");
-            const { relaunch } = await import("@tauri-apps/plugin-process");
 
             updateProgress(30, "Checking for updates...");
-            const update = await check();
 
-            if (update) {
-              console.log("Update found:", update.version);
-              statusEl.textContent = `Update found: v${update.version}`;
-              updateProgress(40, `Downloading v${update.version}...`);
+            try {
+              const update = await window.__TAURI__.updater.check();
 
-              let downloaded = 0;
-              let contentLength = 0;
+              if (update && update.available) {
+                console.log("Update found:", update.version);
+                statusEl.textContent = "Update found: v" + update.version;
+                updateProgress(40, "Downloading v" + update.version + "...");
 
-              await update.downloadAndInstall((event) => {
-                switch (event.event) {
-                  case "Started":
-                    contentLength = event.data.contentLength ?? 0;
-                    console.log("Download started");
-                    break;
-                  case "Progress":
-                    downloaded += event.data.chunkLength;
-                    const percent =
-                      contentLength > 0
-                        ? 40 + (downloaded / contentLength) * 50
-                        : 60;
-                    updateProgress(percent, "Downloading update...");
-                    break;
-                  case "Finished":
-                    updateProgress(100, "Installing update...");
-                    console.log("Download finished");
-                    break;
-                }
-              });
+                let downloaded = 0;
+                let contentLength = 0;
 
-              console.log("Relaunching...");
-              await relaunch();
-              return;
-            } else {
-              console.log("No update available");
+                await update.downloadAndInstall(function (event) {
+                  switch (event.event) {
+                    case "Started":
+                      contentLength = event.data.contentLength || 0;
+                      console.log("Download started");
+                      break;
+                    case "Progress":
+                      downloaded += event.data.chunkLength;
+                      const percent =
+                        contentLength > 0
+                          ? 40 + (downloaded / contentLength) * 50
+                          : 60;
+                      updateProgress(percent, "Downloading update...");
+                      break;
+                    case "Finished":
+                      updateProgress(100, "Installing update...");
+                      console.log("Download finished");
+                      break;
+                  }
+                });
+
+                console.log("Relaunching...");
+                await window.__TAURI__.process.relaunch();
+                return;
+              } else {
+                console.log("No update available");
+              }
+            } catch (updateError) {
+              console.error("Update check error:", updateError);
+              // Continue to show main window
             }
           } else {
             console.log("Dev mode - skipping update check");
@@ -150,21 +158,28 @@
 
           // No update or dev mode
           updateProgress(100, "Starting application...");
-          await new Promise((resolve) => setTimeout(resolve, 500));
 
-          console.log("Calling show_main_window command");
-          await invoke("show_main_window");
-          console.log("Main window shown");
+          setTimeout(async function () {
+            console.log("Calling show_main_window command");
+            try {
+              await window.__TAURI__.core.invoke("show_main_window");
+              console.log("Main window shown");
+            } catch (e) {
+              console.error("Failed to show main window:", e);
+            }
+          }, 500);
         } catch (error) {
           console.error("Error during initialization:", error);
           statusEl.textContent = "Error - trying to start app...";
 
           // Try to show main window anyway
-          try {
-            await invoke("show_main_window");
-          } catch (e) {
-            console.error("Failed to show main window:", e);
-          }
+          setTimeout(async function () {
+            try {
+              await window.__TAURI__.core.invoke("show_main_window");
+            } catch (e) {
+              console.error("Failed to show main window:", e);
+            }
+          }, 1000);
         }
       }
 

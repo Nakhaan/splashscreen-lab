@@ -1,11 +1,11 @@
 {
-  "version": "0.0.6",
+  "version": "0.0.7",
   "notes": "Test update with bug fixes",
   "pub_date": "2026-01-21T19:30:00Z",
   "platforms": {
     "linux-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVUSXA5ZE1nRS93ZUk5OUNvbW9uZmlXVEp4YjZkamV6VG1uQlFXV2huc2VINE5hbnB4aHI3WkdrZFh4c3NFVkhJN3dKRjJsenRoM2krRUJpUk5YQjZrKzlZTzJTOFYveFF3PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzY4ODUyMTgyCWZpbGU6c3BsYXNoc2NyZWVuLWxhYl8wLjAuNl9hbWQ2NC5BcHBJbWFnZQpCc0xZV0pCeTkrbUI1ZHJTeFZGNyt4ZmpaU1BqR1IrMVBJRjlVWmltZ0pVRU1aWWxMNVVVUkNGMFlZT2hlTjNuRFF1cTIyTmNOL3pidjhPWFpqY2NDdz09Cg==",
-      "url": "https://github.com/Nakhaan/splashscreen-lab/releases/download/0.0.6/splashscreen-lab_0.0.6_amd64.AppImage"
+      "url": "https://github.com/Nakhaan/splashscreen-lab/releases/download/0.0.7/splashscreen-lab_0.0.7_amd64.AppImage"
     }
   }
 }

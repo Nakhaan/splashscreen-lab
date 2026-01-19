@@ -14,30 +14,23 @@ struct SetupState {
 // Our main entrypoint in a version 2 mobile compatible app
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
-    // Don't write code before Tauri starts, write it in the
-    // setup hook instead!
     tauri::Builder::default()
-        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
-        // Register a `State` to be managed by Tauri
-        // We need write access to it so we wrap it in a `Mutex`
+        .plugin(tauri_plugin_process::init())
         .manage(Mutex::new(SetupState {
             frontend_task: false,
             backend_task: false,
         }))
-        // Add a command we can use to check
-        .invoke_handler(tauri::generate_handler![greet, set_complete])
-        // Use the setup hook to execute setup related tasks
-        // Runs before the main loop, so no windows are yet created
+        .invoke_handler(tauri::generate_handler![
+            greet,
+            set_complete,
+            show_main_window
+        ])
         .setup(|app| {
-            // Spawn setup as a non-blocking task so the windows can be
-            // created and ran while it executes
             spawn(setup(app.handle().clone()));
-            // The hook expects an Ok result
             Ok(())
         })
-        // Run the app
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }
@@ -47,6 +40,22 @@ fn greet(name: String) -> String {
     format!("Hello {name} from Rust!")
 }
 
+#[tauri::command]
+async fn show_main_window(app: AppHandle) -> Result<(), String> {
+    // Get the splashscreen window and close it
+    if let Some(splashscreen) = app.get_webview_window("splashscreen") {
+        splashscreen.close().map_err(|e| e.to_string())?;
+    }
+
+    // Get the main window and show it
+    if let Some(main_window) = app.get_webview_window("main") {
+        main_window.show().map_err(|e| e.to_string())?;
+        main_window.set_focus().map_err(|e| e.to_string())?;
+    }
+
+    Ok(())
+}
+
 // A custom task for setting the state of a setup task
 #[tauri::command]
 async fn set_complete(
@@ -54,7 +63,6 @@ async fn set_complete(
     state: State<'_, Mutex<SetupState>>,
     task: String,
 ) -> Result<(), ()> {
-    // Lock the state without write access
     let mut state_lock = state.lock().unwrap();
     match task.as_str() {
         "frontend" => state_lock.frontend_task = true,
@@ -63,11 +71,8 @@ async fn set_complete(
     }
     // Check if both tasks are completed
     if state_lock.backend_task && state_lock.frontend_task {
-        // Setup is complete, we can close the splashscreen
-        // and unhide the main window!
-        let splash_window = app.get_webview_window("splashscreen").unwrap();
+        // Note: We no longer close splashscreen here since it's handled separately
         let main_window = app.get_webview_window("main").unwrap();
-        splash_window.close().unwrap();
         main_window.show().unwrap();
     }
     Ok(())
@@ -75,13 +80,9 @@ async fn set_complete(
 
 // An async function that does some heavy setup task
 async fn setup(app: AppHandle) -> Result<(), ()> {
-    // Fake performing some heavy action for 3 seconds
     println!("Performing really heavy backend setup task...");
     sleep(Duration::from_secs(3)).await;
     println!("Backend setup task completed!");
-    // Set the backend task as being completed
-    // Commands can be ran as regular functions as long as you take
-    // care of the input arguments yourself
     set_complete(
         app.clone(),
         app.state::<Mutex<SetupState>>(),

@@ -7,7 +7,15 @@
     "core:default",
     "opener:default",
     "updater:default",
-    "dialog:allow-ask",
-    "process:default"
+    "updater:allow-check",
+    "updater:allow-download-and-install",
+    "process:default",
+    "process:allow-restart",
+    "core:window:default",
+    "core:window:allow-show",
+    "core:window:allow-close",
+    "core:webview:default",
+    "core:webview:allow-webview-close",
+    "core:window:allow-get-all-windows"
   ]
 }
